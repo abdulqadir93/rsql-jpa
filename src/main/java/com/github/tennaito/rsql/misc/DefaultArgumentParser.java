@@ -27,6 +27,7 @@ package com.github.tennaito.rsql.misc;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -81,6 +82,11 @@ public class DefaultArgumentParser implements ArgumentParser {
         // date
         if (type.equals(Date.class)) {
             return (T) parseDate(argument, type);
+        }
+
+        // timestamp
+        if (type.equals(Timestamp.class)) {
+            return (T) new Timestamp(Long.valueOf(argument));
         }
 
         // try to parse via valueOf(String s) method
