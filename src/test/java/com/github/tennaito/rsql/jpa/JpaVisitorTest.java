@@ -454,6 +454,15 @@ public class JpaVisitorTest extends AbstractVisitorTest<Course> {
 	}
 
 	@Test
+	public void testMultipleConditionsOnSingleAssociation() {
+		Node rootNode = new RSQLParser().parse("department.id==1;department.name==Testing");
+		RSQLVisitor<CriteriaQuery<Course>, EntityManager> visitor = new JpaCriteriaQueryVisitor<Course>();
+		CriteriaQuery<Course> query = rootNode.accept(visitor, entityManager);
+		Root root = (Root) query.getRoots().toArray()[0];
+		assertEquals(1, root.getJoins().size());
+	}
+
+	@Test
     public void testAndSelection() throws Exception {
         Node rootNode = new RSQLParser().parse("department.id==1;id==2");
         RSQLVisitor<CriteriaQuery<Course>, EntityManager> visitor = new JpaCriteriaQueryVisitor<Course>();
