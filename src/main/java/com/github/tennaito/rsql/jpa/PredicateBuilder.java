@@ -34,6 +34,7 @@ import cz.jirutka.rsql.parser.ast.Node;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Fetch;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Path;
@@ -252,6 +253,13 @@ public final class PredicateBuilder {
                 return join;
             }
         }
+
+        for (Fetch fetch : (Set<Fetch>)root.getFetches()) {
+            if (fetch.getAttribute().getJavaType().equals(type.getJavaType())) {
+                return (Join)fetch;
+            }
+        }
+
         return null;
     }
 
